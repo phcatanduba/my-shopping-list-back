@@ -18,11 +18,15 @@ app.get('/items', async (req, res) => {
 
 app.post('/items', async (req, res) => {
     try {
-        const request = await connection.query(
-            'INSERT INTO items (text) values ($1)',
-            [req.body.text]
-        );
-        res.sendStatus(201);
+        if (req.body.text) {
+            const request = await connection.query(
+                'INSERT INTO items (text) values ($1)',
+                [req.body.text]
+            );
+            res.sendStatus(201);
+        } else {
+            res.sendStatus(400);
+        }
     } catch (e) {
         console.log(e);
     }
